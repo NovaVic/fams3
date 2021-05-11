@@ -303,7 +303,7 @@ namespace DynamicsAdapter.Web.PersonSearch
                     e.Person = _returnedPerson;
                     SSG_Employment ssg_employment = await _searchRequestService.CreateEmployment(e, _cancellationToken);
 
-                    if (employment.Employer != null)
+                    if (employment.Employer?.Phones != null )
                     {
                         foreach (var phone in employment.Employer.Phones)
                         {
