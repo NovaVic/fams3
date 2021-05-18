@@ -151,12 +151,14 @@ namespace SearchRequestAdaptor.Notifier
                 }
                 catch (Exception exception)
                 {
+
                     if (retryTimes >= maxRetryTimes)
                     {
                         await _searchRequestEventPublisher.PublishSearchRequestFailed(searchRequestOrdered, exception.Message);
                         _logger.LogError($"The webHook {webHookName} notification failed for {eventName} for {webHook.Name} webHook. [{exception.Message}]");
                         return;
                     }
+                    _logger.LogError(exception.GetType().Name + exception.Message);
                     throw exception;
                 }
             }
