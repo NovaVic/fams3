@@ -240,7 +240,7 @@ namespace SearchApi.Web.Test.DeepSearch
 
             await _sut.UpdateDataPartner("mykey", "ICBC", "Completed");
             await _sut.UpdateDataPartner("mykey", "ICBC", "Rejected");
-            _cacheServiceMock.Verify(x => x.UpdateDataPartnerCompleteStatus(It.IsAny<string>(),It.Is<string>(m=>m=="ICBC")), Times.Exactly(2));
+            _cacheServiceMock.Verify(x => x.UpdateDataPartnerCompleteStatus(It.IsAny<string>(),It.Is<string>(m=>m=="ICBC"), It.Is<bool>(m=>m==true)), Times.Exactly(2));
         }
 
         [Test]

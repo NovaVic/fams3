@@ -92,7 +92,7 @@ namespace SearchApi.Web.DeepSearch
                 if (eventName.Equals(EventName.Completed) || eventName.Equals(EventName.Rejected))
                 {
                     _logger.LogInformation($"Updating data partner as completed for {dataPartner} for {eventName} event");
-                    int tryCount = await _cacheService.UpdateDataPartnerCompleteStatus(searchRequestKey, dataPartner);
+                    int tryCount = await _cacheService.UpdateDataPartnerCompleteStatus(searchRequestKey, dataPartner, true);
                     _logger.LogInformation("Successfully update data partner status with {tries}",tryCount);
                 }
             }
@@ -142,8 +142,6 @@ namespace SearchApi.Web.DeepSearch
                                 existingIds.Add(identifier);
                         }
                     }
-
-
                 }
 
                 var matchedPersons = eventStatus.MatchedPersons;

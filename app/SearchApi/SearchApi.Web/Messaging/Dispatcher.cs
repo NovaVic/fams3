@@ -133,9 +133,7 @@ namespace SearchApi.Web.Messaging
         {
             try
             {
-                var searchRequest = await _cacheService.GetRequest(searchRequestKey);
-                if(searchRequest!=null) searchRequest.ResetDataPartner(dataPartner);
-                await _cacheService.SaveRequest(searchRequest);
+                await _cacheService.UpdateDataPartnerCompleteStatus(searchRequestKey, dataPartner, false);
             }
             catch (Exception exception)
             {

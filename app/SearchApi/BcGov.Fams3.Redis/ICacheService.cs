@@ -27,7 +27,7 @@ namespace BcGov.Fams3.Redis
         Task Update(string key, dynamic data);
         Task<string> Get(string key);
         Task Delete(string key);
-        Task<int> UpdateDataPartnerCompleteStatus(string searchRequestkey,string dataPartner);
+        Task<int> UpdateDataPartnerCompleteStatus(string searchRequestkey,string dataPartner, bool completed);
     }
 
     public class CacheService : ICacheService
@@ -145,7 +145,7 @@ namespace BcGov.Fams3.Redis
 
         }
 
-        public async Task<int> UpdateDataPartnerCompleteStatus(string key, string dataPartner)
+        public async Task<int> UpdateDataPartnerCompleteStatus(string key, string dataPartner, bool completed)
         {
             if (string.IsNullOrEmpty(key)) throw new ArgumentNullException("Save : Key cannot be null");
             bool committed = false;
@@ -161,7 +161,7 @@ namespace BcGov.Fams3.Redis
                     var partner = searchRequest.DataPartners?.FirstOrDefault(x => x.Name == dataPartner);
                     if (partner != null)
                     {
-                        partner.Completed = true;
+                        partner.Completed = completed;
                     }
                 }
                 var trans = _stackRedisCacheClient.Db0.Database.CreateTransaction();

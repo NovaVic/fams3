@@ -15,22 +15,6 @@ namespace SearchApi.Web.Search
 
         }
 
-        public static SearchRequest UpdateDataPartner(this SearchRequest request, string dataPartner)
-        {
-            var partner = request.DataPartners?.FirstOrDefault(x => x.Name == dataPartner);
-            if(partner != null)
-            {
-                partner.Completed = true;
-            }
-            return request;
-        }
-        public static SearchRequest ResetDataPartner(this SearchRequest request, string dataPartner)
-        {
-            var partner = request.DataPartners.ToList().FirstOrDefault(x => x.Name == dataPartner);
-            if(partner != null)
-                partner.Completed = false;
-            return request;
-        }
         public static bool AllPartnerCompleted(this SearchRequest request)
         {
 
