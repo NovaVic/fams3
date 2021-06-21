@@ -163,7 +163,7 @@ namespace SearchRequest.Adaptor.Test.Notifier
 
 
         [Test]
-        public async Task NotifySearchRequestEventAsync_should_throw_exception_if_invalid_url_setting()
+        public Task NotifySearchRequestEventAsync_should_throw_exception_if_invalid_url_setting()
         {
             _searchRequestOptionsMock.Setup(x => x.Value).Returns(
                 new SearchRequestAdaptorOptions().AddWebHook("test", "invalidUrl"));
@@ -174,8 +174,8 @@ namespace SearchRequest.Adaptor.Test.Notifier
             await _sut.NotifySearchRequestEventAsync(
                     _fakeSearchRequestOrdered.RequestId,
                     _fakeSearchRequestOrdered, CancellationToken.None));
+            return Task.CompletedTask;
         }
-
 
         [Test]
         public async Task NotifySearchRequestEventAsync_should_publish_rejected_if_http_return_BadRequest()
@@ -215,7 +215,7 @@ namespace SearchRequest.Adaptor.Test.Notifier
         }
 
         [Test]
-        public async Task NotifySearchRequestEventAsync_should_throw_exception_if_http_throw_exception()
+        public Task NotifySearchRequestEventAsync_should_throw_exception_if_http_throw_exception()
         {
             _searchRequestOptionsMock.Setup(x => x.Value).Returns(
                    new SearchRequestAdaptorOptions().AddWebHook("test", "http://test.org"));
@@ -232,7 +232,7 @@ namespace SearchRequest.Adaptor.Test.Notifier
             await _sut.NotifySearchRequestEventAsync(
                      _fakeSearchRequestOrdered.RequestId,
                      _fakeSearchRequestOrdered, CancellationToken.None));
-
+            return Task.CompletedTask;
         }
 
         [Test]

@@ -397,10 +397,9 @@ namespace SearchApi.Web.Test.Notifications
 
 
         [Test]
-            public async Task it_should_log_error_when_not_uri()
-            {
-
-                _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions()
+            public Task it_should_log_error_when_not_uri()
+        {
+            _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions()
                     .AddWebHook("test", "not_uri"));
 
                 var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -424,17 +423,13 @@ namespace SearchApi.Web.Test.Notifications
                 _sut = new WebHookNotifierSearchEventStatus(httpClient, _searchApiOptionsMock.Object,_loggerMock.Object,  _deepSearchServiceMock.Object);
 
                 Assert.ThrowsAsync<Exception>( async () => await _sut.NotifyEventAsync(fakePersonSearchStatus.SearchRequestKey, fakePersonSearchStatus, "Accepted",CancellationToken.None));
+            return Task.CompletedTask;
+        }
 
-                //_loggerMock.VerifyLog(LogLevel.Warning, $"The webHook PersonSearch notification uri is not established or is not an absolute Uri for test. Set the WebHook.Uri value on SearchApi.WebHooks settings.", "log warning failed");
-
-            }
-
-            [Test]
-            public async Task when_subscriber_return_bad_request_it_should_log_an_error()
-            {
-
-
-                _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
+        [Test]
+            public Task when_subscriber_return_bad_request_it_should_log_an_error()
+        {
+            _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
 
                 var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
                 handlerMock
@@ -457,29 +452,13 @@ namespace SearchApi.Web.Test.Notifications
                 _sut = new WebHookNotifierSearchEventStatus(httpClient, _searchApiOptionsMock.Object, _loggerMock.Object,  _deepSearchServiceMock.Object);
 
                 Assert.ThrowsAsync<Exception>(async () => await _sut.NotifyEventAsync(fakePersonSearchStatus.SearchRequestKey, fakePersonSearchStatus, "Accepted", CancellationToken.None));
-                //var expectedUri = new Uri($"http://test:1234/Accepted/{fakePersonSearchStatus.SearchRequestKey}");
+            return Task.CompletedTask;
+        }
 
-                //handlerMock.Protected().Verify(
-                //    "SendAsync",
-                //    Times.Exactly(1),
-                //    ItExpr.Is<HttpRequestMessage>(req =>
-                //            req.Method == HttpMethod.Post
-                //            && req.RequestUri == expectedUri // to this uri
-                //    ),
-                //    ItExpr.IsAny<CancellationToken>()
-                //);
-
-                //_loggerMock.VerifyLog(LogLevel.Error, $"The webHook PersonSearch notification has not executed status Accepted successfully for test webHook. The error code is 400.", "failed log error");
-
-            }
-
-
-            [Test]
-            public async Task when_subscriber_return_unhautorized_it_should_log_an_error()
-            {
-
-
-                _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
+        [Test]
+            public Task when_subscriber_return_unhautorized_it_should_log_an_error()
+        {
+            _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
 
                 var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
                 handlerMock
@@ -502,29 +481,13 @@ namespace SearchApi.Web.Test.Notifications
                 _sut = new WebHookNotifierSearchEventStatus(httpClient, _searchApiOptionsMock.Object,  _loggerMock.Object, _deepSearchServiceMock.Object);
 
                 Assert.ThrowsAsync<Exception>(async () => await _sut.NotifyEventAsync(fakePersonSearchStatus.SearchRequestKey, fakePersonSearchStatus, "Accepted",CancellationToken.None));
-                //var expectedUri = new Uri($"http://test:1234/Accepted/{fakePersonSearchStatus.SearchRequestKey}");
+            return Task.CompletedTask;
+        }
 
-                //handlerMock.Protected().Verify(
-                //    "SendAsync",
-                //    Times.Exactly(1),
-                //    ItExpr.Is<HttpRequestMessage>(req =>
-                //            req.Method == HttpMethod.Post
-                //            && req.RequestUri == expectedUri // to this uri
-                //    ),
-                //    ItExpr.IsAny<CancellationToken>()
-                //);
-
-                //_loggerMock.VerifyLog(LogLevel.Error, $"The webHook PersonSearch notification has not executed status Accepted successfully for test webHook. The error code is 401.", "failed log error");
-
-            }
-
-
-            [Test]
-            public async Task when_httpClient_throw_exception_it_should_log_an_error()
-            {
-
-
-                _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
+        [Test]
+            public Task when_httpClient_throw_exception_it_should_log_an_error()
+        {
+            _searchApiOptionsMock.Setup(x => x.Value).Returns(new SearchApiOptions().AddWebHook("test", "http://test:1234"));
 
                 var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
                 handlerMock
@@ -542,11 +505,8 @@ namespace SearchApi.Web.Test.Notifications
                 _sut = new WebHookNotifierSearchEventStatus(httpClient, _searchApiOptionsMock.Object, _loggerMock.Object, _deepSearchServiceMock.Object);
 
                 Assert.ThrowsAsync<Exception>(async () => await _sut.NotifyEventAsync(fakePersonSearchStatus.SearchRequestKey, new FakePersonSearchAdapterEvent() { ProviderProfile = new FakeProviderProfile { } }, "Accepted",CancellationToken.None));
-
-                //_loggerMock.VerifyLog(LogLevel.Error, "unknown error");
-            }
-
-
+            return Task.CompletedTask;
         }
+    }
     
 }
