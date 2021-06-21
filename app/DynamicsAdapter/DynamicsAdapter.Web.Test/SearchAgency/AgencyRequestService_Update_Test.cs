@@ -1211,7 +1211,7 @@ namespace DynamicsAdapter.Web.Test.SearchAgency
         }
 
         [Test]
-        public async Task wrong_fileId_searchRequestOrdered_ProcessUpdateSearchRequest_should_throw_exception()
+        public Task wrong_fileId_searchRequestOrdered_ProcessUpdateSearchRequest_should_throw_exception()
         {
             Guid guid = Guid.NewGuid();
             _searchRequestServiceMock.Setup(x => x.GetSearchRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -1219,7 +1219,7 @@ namespace DynamicsAdapter.Web.Test.SearchAgency
             SearchRequestOrdered searchRequestOrdered = new SearchRequestOrdered();
             Assert.ThrowsAsync<Exception>(async()=> await _sut.ProcessUpdateSearchRequest(searchRequestOrdered));
             _searchRequestServiceMock.Verify(m => m.CreateNotes(It.IsAny<NotesEntity>(), It.IsAny<CancellationToken>()), Times.Never);
-
+            return Task.CompletedTask;
         }
 
         [Test]
@@ -1237,20 +1237,21 @@ namespace DynamicsAdapter.Web.Test.SearchAgency
         }
 
         [Test]
-        public async Task null_searchRequestOrdered_ProcessUpdateSearchRequest_should_throw_exception()
+        public Task null_searchRequestOrdered_ProcessUpdateSearchRequest_should_throw_exception()
         {
             _searchRequestServiceMock.Setup(x => x.GetPerson(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult<SSG_Person>(new SSG_Person()
+                    .Returns(Task.FromResult(new SSG_Person()
                     {
                         PersonId = _personGuid,
                         IsCreatedByAgency = true
                     }));
             _mapper.Setup(m => m.Map<SearchRequestEntity>(It.IsAny<SearchRequestOrdered>()))
-               .Returns((SearchRequestEntity)(null));
+               .Returns((SearchRequestEntity)null);
 
             Guid guid = Guid.NewGuid();
             SearchRequestOrdered searchRequestOrdered = new SearchRequestOrdered { Person = new Person { Agency = new Agency { Code = "FMEP" } } };
             Assert.ThrowsAsync<Exception>(async () => await _sut.ProcessUpdateSearchRequest(searchRequestOrdered));
+            return Task.CompletedTask;
         }
 
         [Test]
